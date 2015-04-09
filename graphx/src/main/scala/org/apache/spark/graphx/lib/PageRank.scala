@@ -92,6 +92,9 @@ object PageRank extends Logging {
     var iteration = 0
     var prevRankGraph: Graph[Double, Double] = null
     while (iteration < numIter) {
+      
+      val t0 = System.nanoTime()
+      
       rankGraph.cache()
 
       // Compute the outgoing rank contributions of each vertex, perform local preaggregation, and
@@ -108,11 +111,16 @@ object PageRank extends Logging {
       }.cache()
 
       rankGraph.edges.foreachPartition(x => {}) // also materializes rankGraph.vertices
-      logInfo(s"PageRank finished iteration $iteration.")
       prevRankGraph.vertices.unpersist(false)
       prevRankGraph.edges.unpersist(false)
 
+      val t1 = System.nanoTime()
+      logInfo(s"PageRank finished iteration $iteration." + " , time: " + (t1-t0))
+
       iteration += 1
+      
+      
+      
     }
 
     rankGraph
