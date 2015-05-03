@@ -157,6 +157,7 @@ object Pregel extends Logging {
       val t1 = System.nanoTime()
      
       logInfo("Pregel finished iteration " + i + ", time: " + (t1-t0))
+      logInfo("Active Messages in iteration " + i + " : " + activeMessages)
 
       i += 1
     }
